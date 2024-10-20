@@ -27,10 +27,15 @@ function takeTurn(event){
     if (checkItem(c, turn) && !restart){
         currentTurn.classList.add(turn);
         event.target.append(currentTurn);
-        if(checkState(turn)){
+        check = checkState(turn);
+        if(check == 1){ // this is for a winner
             
             infoDisplay.textContent=turn + " is the winner";
             restart=true;
+            document.getElementById("restart").style.display="inline";
+        } else if(check ==2){
+            infoDisplay.textContent= "This is a tie";
+            restart = true;
             document.getElementById("restart").style.display="inline";
         }
         else {
@@ -55,15 +60,25 @@ function checkItem (element, turn){
 }
 
 function checkState(turn){
-    retValue = false;
+    retValue = 0;
+    tie = true;
     checkArray= [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    startCells.forEach(function(a){
+        if(a == ""){
+            tie = false;
+        }
+    })
+    if (tie == false){    
     checkArray.forEach(function(a)
     {
         if(startCells[a[0]]==turn && startCells[a[1]]==turn && startCells[a[2]]==turn){
-            retValue = true;
+            retValue = 1;
             // return retValue;
         }
-});
+})}else{
+    retValue=2;
+}
     return retValue;
 
 }
+
